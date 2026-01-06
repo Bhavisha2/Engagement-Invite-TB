@@ -70,14 +70,17 @@
         <!-- VIDEO SECTION -->
         <section class="mb-16">
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-                <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+                <!-- START: Canva Embed Code -->
+                <div id="canva-container" class="w-full">
+                     <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
  padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
  border-radius: 8px; will-change: transform;">
   <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
     src="https://www.canva.com/design/DAG9ovlH6jc/78NDcY_3HpktqiNUuo8xCQ/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
   </iframe>
 </div>
-<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAG9ovlH6jc&#x2F;78NDcY_3HpktqiNUuo8xCQ&#x2F;watch?utm_content=DAG9ovlH6jc&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">Engagement Invitation</a>
+                </div>
+                <!-- END: Canva Embed Code -->
             </div>
         </section>
 
@@ -111,10 +114,10 @@
                             class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition duration-200 bg-gray-50">
                     </div>
 
-                    <!-- Email -->
+                    <!-- Phone Number -->
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                        <input type="email" id="email" required placeholder="john@example.com"
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+                        <input type="tel" id="phone" required placeholder="e.g. (555) 123-4567"
                             class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition duration-200 bg-gray-50">
                     </div>
 
@@ -146,14 +149,12 @@
                             <option value="3">3 People</option>
                             <option value="4">4 People</option>
                             <option value="5">5 People</option>
+                            <option value="6">6 People</option>
+                            <option value="7">7 People</option>
+                            <option value="8">8 People</option>
+                            <option value="9">9 People</option>
+                            <option value="10">10 People</option>
                         </select>
-                    </div>
-
-                    <!-- Message -->
-                    <div>
-                        <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Dietary Restrictions / Note (Optional)</label>
-                        <textarea id="message" rows="3" 
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-400 outline-none transition duration-200 bg-gray-50"></textarea>
                     </div>
 
                     <button type="submit" id="submit-btn" 
@@ -174,7 +175,6 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        // IMPORTING REALTIME DATABASE INSTEAD OF FIRESTORE
         import { getDatabase, ref, push, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
 
         // Your web app's Firebase configuration
@@ -191,12 +191,11 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getDatabase(app); // Get Realtime Database instance
+        const db = getDatabase(app); 
         
         // 2. Authenticate
         const initAuth = async () => {
             try {
-                // For your personal project, make sure "Anonymous" auth is enabled in your Firebase Console
                 await signInAnonymously(auth);
                 console.log("Authenticated anonymously");
             } catch (error) {
@@ -204,7 +203,7 @@
                 alert("Error connecting to database. Please check your Firebase Console Authentication settings.");
             }
         };
-        initAuth(); // Start auth immediately
+        initAuth(); 
 
         // 3. Handle Form Submission
         const form = document.getElementById('rsvp-form');
@@ -239,27 +238,30 @@
 
             try {
                 const name = document.getElementById('name').value;
-                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
                 const attending = document.querySelector('input[name="attending"]:checked').value === 'yes';
                 const guests = attending ? parseInt(document.getElementById('guests').value) : 0;
-                const message = document.getElementById('message').value;
-
+                
                 // Create a new reference in the 'rsvps' list
                 const newRsvpRef = push(ref(db, 'rsvps'));
                 
                 // Set the data
                 await set(newRsvpRef, {
                     name: name,
-                    email: email,
+                    phone: phone,
                     attending: attending,
                     guests: guests,
-                    message: message,
                     submittedAt: serverTimestamp()
                 });
 
                 // Show Success
                 successMsg.classList.remove('hidden');
+                
+                // Reset form visual state (Bug fix)
                 form.reset();
+                // We must manually reset opacity in case the user hit "No" before submitting
+                guestContainer.style.opacity = '1';
+                guestContainer.style.pointerEvents = 'auto';
                 
             } catch (error) {
                 console.error("Error adding RSVP: ", error);
@@ -275,6 +277,10 @@
         // Expose reset function to window for the "Send another" button
         window.resetForm = function() {
             successMsg.classList.add('hidden');
+            // Double check visual state is correct
+            guestContainer.style.opacity = '1';
+            guestContainer.style.pointerEvents = 'auto';
+            document.getElementById('guests').value = 1;
         }
     </script>
 </body>
