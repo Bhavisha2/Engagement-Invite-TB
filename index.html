@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>You're Invited!</title>
+    
+    <!-- WHATSAPP & SOCIAL SHARE PREVIEW TAGS -->
+    <meta property="og:title" content="You are invited! 💍">
+    <meta property="og:description" content="Please join us for a celebration. Click to watch our video invitation and RSVP.">
+    <!-- PASTE YOUR DIRECT IMGUR LINK BELOW inside the quotes -->
+    <meta property="og:image" content="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80">
+    <meta property="og:url" content="">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
@@ -72,14 +81,17 @@
         <!-- VIDEO SECTION -->
         <section class="mb-16">
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
-               <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+                <!-- START: Canva Embed Code -->
+                <div id="canva-container" class="w-full">
+                     <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
  padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
  border-radius: 8px; will-change: transform;">
   <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
     src="https://www.canva.com/design/DAG9ovlH6jc/78NDcY_3HpktqiNUuo8xCQ/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
   </iframe>
 </div>
-<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAG9ovlH6jc&#x2F;78NDcY_3HpktqiNUuo8xCQ&#x2F;watch?utm_content=DAG9ovlH6jc&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">Engagement Invitation</a>
+                </div>
+                <!-- END: Canva Embed Code -->
             </div>
         </section>
 
@@ -214,7 +226,7 @@
         // 3. EmailJS Initialization
         // !!! IMPORTANT: Replace "YOUR_PUBLIC_KEY_HERE" with your Public Key from EmailJS
         try {
-            emailjs.init("PDvyBJC2Vwz3a_cF5"); 
+            emailjs.init("YOUR_PUBLIC_KEY_HERE"); 
         } catch(e) {
             console.log("EmailJS not configured yet");
         }
@@ -273,7 +285,7 @@
                     try {
                         // Check if keys are still default placeholder
                         // !!! IMPORTANT: Replace "YOUR_SERVICE_ID_HERE" and "YOUR_TEMPLATE_ID_HERE"
-                        await emailjs.send("service_pg9bb4n", "template_k8fmhsn", {
+                        await emailjs.send("YOUR_SERVICE_ID_HERE", "YOUR_TEMPLATE_ID_HERE", {
                             name: name,
                             email: email,
                             phone: phone,
@@ -314,7 +326,3 @@
     </script>
 </body>
 </html>
-
-
-
-
